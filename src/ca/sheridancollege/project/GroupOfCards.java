@@ -49,11 +49,3 @@ public class GroupOfCards {
     public int getMaxSize() {
         return maxSize;
     }
-
-    // optional helper if you ever need to add a card manually
-    public void addCard(Card c) {
-        if (cards.size() < maxSize) {
-            cards.add(c);
-        }
-    }
-}
