@@ -12,44 +12,49 @@ import java.util.Collections;
  * A concrete class that represents any grouping of cards for a Game. HINT, you might want to subclass this more than
  * once. The group of cards has a maximum size attribute which is flexible for reuse.
  *
- * @author dancye
- * @author Paul Bonenfant Jan 2020
+ * @author Thomas Agustin
+ * @author Group 4
  */
-public class GroupOfCards {
+public class Deck extends GroupOfCards {
 
-    //The group of cards, stored in an ArrayList
-    private ArrayList<Card> cards;
-    private int size;//the size of the grouping
-
-    public GroupOfCards(int size) {
-        this.size = size;
+    public Deck() {
+        super();              // sets up the cards array
+        initializeDeck();     // fill with 52 cards
+        shuffle();
     }
 
-    /**
-     * A method that will get the group of cards as an ArrayList
-     *
-     * @return the group of cards.
-     */
-    public ArrayList<Card> getCards() {
-        return cards;
+    // NEW: create 52 BlackjackCard objects
+    private void initializeDeck() {
+        int index = 0;
+        for (Suit suit : Suit.values()) {
+            for (Rank rank : Rank.values()) {
+                BlackjackCard card = new BlackjackCard(suit.toString(),
+                                                     rank.toString(),
+                                                     getCardValue(rank));
+                cards[index] = card; // 'cards' comes from GroupOfCards
+                index++;
+            }
+        }
+        size = 52;
     }
 
-    public void shuffle() {
-        Collections.shuffle(cards);
+    // NEW: helper to get card value for blackjack
+    private int getCardValue(Rank rank) {
+        switch (rank) {
+            case TWO:   return 2;
+            case THREE: return 3;
+            case FOUR:  return 4;
+            case FIVE:  return 5;
+            case SIX:   return 6;
+            case SEVEN: return 7;
+            case EIGHT: return 8;
+            case NINE:  return 9;
+            case TEN:
+            case JACK:
+            case QUEEN:
+            case KING:  return 10;
+            case ACE:   return 11;   // treat as 11, Hand will adjust
+            default:    return 0;
+        }
     }
-
-    /**
-     * @return the size of the group of cards
-     */
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * @param size the max size for the group of cards
-     */
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-}//end class
+}
