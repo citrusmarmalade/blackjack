@@ -15,46 +15,45 @@ import java.util.Collections;
  * @author Thomas Agustin
  * @author Group 4
  */
-public class Deck extends GroupOfCards {
 
-    public Deck() {
-        super();              // sets up the cards array
-        initializeDeck();     // fill with 52 cards
-        shuffle();
+public class GroupOfCards {
+
+    // maximum number of cards for this group
+    protected int maxSize;
+
+    // the actual cards currently in the group
+    protected ArrayList<Card> cards;
+
+    // constructor – caller decides how many cards this group can hold
+    public GroupOfCards(int givenSize) {
+        this.maxSize = givenSize;
+        this.cards = new ArrayList<Card>();
     }
 
-    // NEW: create 52 BlackjackCard objects
-    private void initializeDeck() {
-        int index = 0;
-        for (Suit suit : Suit.values()) {
-            for (Rank rank : Rank.values()) {
-                BlackjackCard card = new BlackjackCard(suit.toString(),
-                                                     rank.toString(),
-                                                     getCardValue(rank));
-                cards[index] = card; // 'cards' comes from GroupOfCards
-                index++;
-            }
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
+
+    // deal the "top" card (last one in the list)
+    public Card dealCard() {
+        if (cards.isEmpty()) {
+            return null;
         }
-        size = 52;
+        return cards.remove(cards.size() - 1);
     }
 
-    // NEW: helper to get card value for blackjack
-    private int getCardValue(Rank rank) {
-        switch (rank) {
-            case TWO:   return 2;
-            case THREE: return 3;
-            case FOUR:  return 4;
-            case FIVE:  return 5;
-            case SIX:   return 6;
-            case SEVEN: return 7;
-            case EIGHT: return 8;
-            case NINE:  return 9;
-            case TEN:
-            case JACK:
-            case QUEEN:
-            case KING:  return 10;
-            case ACE:   return 11;   // treat as 11, Hand will adjust
-            default:    return 0;
+    public int getSize() {
+        return cards.size();
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    // optional helper if you ever need to add a card manually
+    public void addCard(Card c) {
+        if (cards.size() < maxSize) {
+            cards.add(c);
         }
     }
 }
